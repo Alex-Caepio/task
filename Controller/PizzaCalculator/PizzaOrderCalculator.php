@@ -1,12 +1,12 @@
 <?php
 
 require_once 'IPizzaOrderCalculator.php';
-require_once 'PepperoniPizza.php';
-require_once 'RuralPizza.php';
-require_once 'HawaiianPizza.php';
-require_once 'MushroomPizza.php';
-require_once '../db/DatabaseConnector.php';
-require_once '../currency/CurrencyConverter.php';
+require_once '../PepperoniPizza.php';
+require_once '../RuralPizza.php';
+require_once '../HawaiianPizza.php';
+require_once '../MushroomPizza.php';
+require_once '../../db/DatabaseConnector.php';
+require_once '../../currency/CurrencyConverter.php';
 
 class PizzaOrderCalculator implements IPizzaOrderCalculator
 {

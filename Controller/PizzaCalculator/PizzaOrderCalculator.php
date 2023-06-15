@@ -26,6 +26,20 @@ class PizzaOrderCalculator implements IPizzaOrderCalculator
         $this->currencyConverter = new CurrencyConverter();
     }
 
+    public function handleRequest()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $pizzaType = htmlspecialchars($_POST['pizzaType']);
+            $pizzaSize = htmlspecialchars($_POST['pizzaSize']);
+            $sauce = htmlspecialchars($_POST['sauce']);
+
+            $pizzaTerminal = new PizzaOrderCalculator();
+            $orderSummary = $pizzaTerminal->calculateOrderPrice($pizzaType, $pizzaSize, $sauce);
+
+            echo $orderSummary;
+        }
+    }
+
     public function calculateOrderPrice($pizzaType, $pizzaSize, $sauce)
     {
         if (!array_key_exists($pizzaType, $this->pizzaTypes)) {
@@ -58,22 +72,8 @@ class PizzaOrderCalculator implements IPizzaOrderCalculator
 
         return $orderSummary;
     }
-
-    public function handleRequest()
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $pizzaType = htmlspecialchars($_POST['pizzaType']);
-            $pizzaSize = htmlspecialchars($_POST['pizzaSize']);
-            $sauce = htmlspecialchars($_POST['sauce']);
-
-            $pizzaTerminal = new PizzaOrderCalculator();
-            $orderSummary = $pizzaTerminal->calculateOrderPrice($pizzaType, $pizzaSize, $sauce);
-
-            echo $orderSummary;
-        }
-    }
 }
 
-$pizzaTerminal = new PizzaOrderCalculator();
-$pizzaTerminal->handleRequest();
+$pizzaTerminalCalc = new PizzaOrderCalculator();
+$pizzaTerminalCalc->handleRequest();
 

@@ -34,9 +34,8 @@ class PizzaOrderCalculator implements IPizzaOrderCalculator
             $sauce = htmlspecialchars($_POST['sauce']);
 
             $pizzaTerminal = new PizzaOrderCalculator();
-            $orderSummary = $pizzaTerminal->calculateOrderPrice($pizzaType, $pizzaSize, $sauce);
 
-            echo $orderSummary;
+            echo $pizzaTerminal->calculateOrderPrice($pizzaType, $pizzaSize, $sauce);
         }
     }
 

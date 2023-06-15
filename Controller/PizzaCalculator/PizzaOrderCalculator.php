@@ -31,9 +31,11 @@ class PizzaOrderCalculator implements IPizzaOrderCalculator
         if (!array_key_exists($pizzaType, $this->pizzaTypes)) {
             return 0;
         }
+
         $dbConnector = $this->dbConnector;
         $pizzaClass = $this->pizzaTypes[$pizzaType];
         $pizza = new $pizzaClass($pizzaType, $dbConnector->getPizzaPrice($pizzaType));
+
         $pizzaPriceUSD = $pizza->calculatePrice($pizzaSize);
         $saucePriceUSD = $dbConnector->getSaucePrice($sauce);
 
@@ -57,17 +59,21 @@ class PizzaOrderCalculator implements IPizzaOrderCalculator
         return $orderSummary;
     }
 
+    public function handleRequest()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $pizzaType = htmlspecialchars($_POST['pizzaType']);
+            $pizzaSize = htmlspecialchars($_POST['pizzaSize']);
+            $sauce = htmlspecialchars($_POST['sauce']);
+
+            $pizzaTerminal = new PizzaOrderCalculator();
+            $orderSummary = $pizzaTerminal->calculateOrderPrice($pizzaType, $pizzaSize, $sauce);
+
+            echo $orderSummary;
+        }
+    }
 }
 
-$orderCalculator = new PizzaOrderCalculator();
+$pizzaTerminal = new PizzaOrderCalculator();
+$pizzaTerminal->handleRequest();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $pizzaType = htmlspecialchars($_POST['pizzaType']);
-    $pizzaSize = htmlspecialchars($_POST['pizzaSize']);
-    $sauce = htmlspecialchars($_POST['sauce']);
-
-    $pizzaTerminal = new PizzaOrderCalculator();
-    $orderSummary = $pizzaTerminal->calculateOrderPrice($pizzaType, $pizzaSize, $sauce);
-
-    echo $orderSummary;
-}
